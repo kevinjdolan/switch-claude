@@ -18,7 +18,7 @@ curl -fsSL https://raw.githubusercontent.com/kevinjdolan/switch-claude/main/inst
 
 This downloads the latest release into `/Applications` and launches it.
 
-**Manual:** grab `SwitchClaude.zip` from the [latest release](https://github.com/kevinjdolan/switch-claude/releases/latest), unzip, and drag `Switch Claude.app` into Applications. The app is ad-hoc signed rather than notarized, so on first open macOS will warn you — right-click the app → **Open** → **Open** (or approve it under System Settings → Privacy & Security). The one-liner install avoids this entirely.
+**Manual:** grab `SwitchClaude.dmg` from the [latest release](https://github.com/kevinjdolan/switch-claude/releases/latest), open it, and drag `Switch Claude.app` into Applications (a `SwitchClaude.zip` is also available if you prefer). The app is ad-hoc signed rather than notarized, so on first open macOS will warn you — right-click the app → **Open** → **Open** (or approve it under System Settings → Privacy & Security). The one-liner install avoids this entirely.
 
 **From source:**
 
@@ -29,7 +29,7 @@ cd switch-claude
 cp -R "Switch Claude.app" /Applications/
 ```
 
-Requires macOS 14+ and the Xcode command line tools.
+Requires macOS 14+ and the Xcode command line tools. `./make-dmg.sh` additionally packages the built app into a drag-to-Applications `SwitchClaude.dmg`.
 
 ## Usage
 
