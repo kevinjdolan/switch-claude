@@ -10,15 +10,15 @@ Claude Desktop has no built-in profile switcher — if you have a personal and a
 
 ## Install
 
-**One-liner (recommended):**
+**Download:** grab `SwitchClaude.dmg` from the [latest release](https://github.com/kevinjdolan/switch-claude/releases/latest), open it, and drag `Switch Claude.app` into Applications. Releases are Developer ID–signed and notarized by Apple, so the app opens with no security warnings. (A `SwitchClaude.zip` is also available if you prefer.)
+
+**Or a one-liner:**
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/kevinjdolan/switch-claude/main/install.sh | bash
 ```
 
 This downloads the latest release into `/Applications` and launches it.
-
-**Manual:** grab `SwitchClaude.dmg` from the [latest release](https://github.com/kevinjdolan/switch-claude/releases/latest), open it, and drag `Switch Claude.app` into Applications (a `SwitchClaude.zip` is also available if you prefer). The app is ad-hoc signed rather than notarized, so on first open macOS will warn you — right-click the app → **Open** → **Open** (or approve it under System Settings → Privacy & Security). The one-liner install avoids this entirely.
 
 **From source:**
 
@@ -29,7 +29,7 @@ cd switch-claude
 cp -R "Switch Claude.app" /Applications/
 ```
 
-Requires macOS 14+ and the Xcode command line tools. `./make-dmg.sh` additionally packages the built app into a drag-to-Applications `SwitchClaude.dmg`.
+Requires macOS 14+ and the Xcode command line tools. `./make-dmg.sh` additionally packages the built app into a drag-to-Applications `SwitchClaude.dmg` with custom background art, and — when a Developer ID identity and stored notarytool credentials are present — signs, notarizes, and staples both the app and the DMG (see the header comment in `make-dmg.sh`).
 
 ## Usage
 
