@@ -36,13 +36,38 @@ if [ "$HAVE_NOTARY" = 1 ]; then
     xcrun stapler staple "$APP"
 fi
 
-STAGING=".build/dmg-staging"
-rm -rf "$STAGING" "$DMG"
-mkdir -p "$STAGING"
-cp -R "$APP" "$STAGING/"
-ln -s /Applications "$STAGING/Applications"
-hdiutil create -volname "Switch Claude" -srcfolder "$STAGING" -ov -format UDZO -quiet "$DMG"
-rm -rf "$STAGING"
+# Fancy DMG (custom background + pinned icon layout) via dmgbuild, which
+# writes the Finder layout directly — no Finder scripting or permissions.
+# Falls back to a plain app+symlink image if dmgbuild can't be run.
+ART=".build/dmg-art"
+if [ ! -f "$ART/background.tiff" ]; then
+    swift scripts/make-dmg-background.swift "$ART"
+    tiffutil -cathidpicheck "$ART/background.png" "$ART/background@2x.png" \
+        -out "$ART/background.tiff" >/dev/null 2>&1
+fi
+
+DMGBUILD_CMD=""
+if command -v dmgbuild >/dev/null 2>&1; then
+    DMGBUILD_CMD="dmgbuild"
+elif command -v uvx >/dev/null 2>&1; then
+    DMGBUILD_CMD="uvx dmgbuild"
+fi
+
+rm -f "$DMG"
+if [ -n "$DMGBUILD_CMD" ] && [ -f "$ART/background.tiff" ]; then
+    $DMGBUILD_CMD -s scripts/dmg-settings.py \
+        -D app="$APP" -D background="$ART/background.tiff" \
+        "Switch Claude" "$DMG"
+else
+    echo "dmgbuild unavailable (pip install dmgbuild, or install uv) — building plain DMG."
+    STAGING=".build/dmg-staging"
+    rm -rf "$STAGING"
+    mkdir -p "$STAGING"
+    cp -R "$APP" "$STAGING/"
+    ln -s /Applications "$STAGING/Applications"
+    hdiutil create -volname "Switch Claude" -srcfolder "$STAGING" -ov -format UDZO -quiet "$DMG"
+    rm -rf "$STAGING"
+fi
 
 SIGN_IDENTITY="${SIGN_IDENTITY:-$(security find-identity -v -p codesigning 2>/dev/null | awk -F'"' '/Developer ID Application/ {print $2; exit}')}"
 if [ -n "$SIGN_IDENTITY" ] && [ "$SIGN_IDENTITY" != "-" ]; then
