@@ -1,15 +1,15 @@
 #!/bin/bash
-# Installs Switch Claude to /Applications from the latest GitHub release.
+# Installs Claude Swap Mac to /Applications from the latest GitHub release.
 set -euo pipefail
 
-REPO="kevinjdolan/switch-claude"
-APP="Switch Claude.app"
+REPO="kevinjdolan/claude-swap-mac"
+APP="Claude Swap Mac.app"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
-echo "Downloading Switch Claude…"
-curl -fsSL "https://github.com/$REPO/releases/latest/download/SwitchClaude.zip" -o "$TMP/SwitchClaude.zip"
-ditto -x -k "$TMP/SwitchClaude.zip" "$TMP"
+echo "Downloading Claude Swap Mac…"
+curl -fsSL "https://github.com/$REPO/releases/latest/download/ClaudeSwapMac.zip" -o "$TMP/ClaudeSwapMac.zip"
+ditto -x -k "$TMP/ClaudeSwapMac.zip" "$TMP"
 
 echo "Installing to /Applications…"
 rm -rf "/Applications/$APP"

@@ -39,7 +39,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 .environmentObject(switcher)
             let hosting = NSHostingController(rootView: content)
             let w = NSWindow(contentViewController: hosting)
-            w.title = "Switch Claude"
+            w.title = "Claude Swap Mac"
             w.isReleasedWhenClosed = false
             w.setContentSize(NSSize(width: 480, height: 400))
             w.center()
@@ -65,7 +65,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 try SMAppService.mainApp.unregister()
             }
         } catch {
-            NSLog("SwitchClaude: launch-at-login change failed: \(error)")
+            NSLog("ClaudeSwapMac: launch-at-login change failed: \(error)")
         }
         objectWillChange.send()
     }

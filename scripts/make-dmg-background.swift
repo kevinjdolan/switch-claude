@@ -51,7 +51,7 @@ func render(scale: Int) -> NSBitmapImageRep {
     NSBezierPath(ovalIn: NSRect(x: W - 220, y: -160, width: 380, height: 380)).fill()
 
     // Title and subtitle (top of window; bottom-left origin here).
-    drawCentered("Switch Claude", y: H - 58,
+    drawCentered("Claude Swap Mac", y: H - 58,
                  font: rounded(30, .semibold),
                  color: NSColor(calibratedRed: 0.29, green: 0.196, blue: 0.133, alpha: 1))
     drawCentered("Drag to Applications to install", y: H - 92,

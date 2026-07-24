@@ -1,11 +1,11 @@
 import SwiftUI
 
 @main
-struct SwitchClaudeApp: App {
+struct ClaudeSwapMacApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
     var body: some Scene {
-        MenuBarExtra("Switch Claude", systemImage: "arrow.triangle.2.circlepath") {
+        MenuBarExtra("Claude Swap Mac", systemImage: "arrow.triangle.2.circlepath") {
             MenuContent()
                 .environmentObject(appDelegate.store)
                 .environmentObject(appDelegate)
@@ -37,6 +37,6 @@ struct MenuContent: View {
             set: { appDelegate.setLaunchAtLogin($0) }
         ))
         Divider()
-        Button("Quit Switch Claude") { NSApp.terminate(nil) }
+        Button("Quit Claude Swap Mac") { NSApp.terminate(nil) }
     }
 }

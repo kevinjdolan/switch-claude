@@ -1,17 +1,17 @@
 #!/bin/bash
-# Builds, signs, and packages Switch Claude into a drag-to-Applications DMG.
+# Builds, signs, and packages Claude Swap Mac into a drag-to-Applications DMG.
 #
 # If notarization credentials are stored in the keychain (one-time setup:
-#   xcrun notarytool store-credentials switch-claude-notary \
+#   xcrun notarytool store-credentials claude-swap-mac-notary \
 #     --apple-id <your-apple-id> --team-id J3BZJ3LKTQ
 # using an app-specific password from account.apple.com), the app and the DMG
 # are notarized and stapled, so downloads open with no Gatekeeper warning.
 set -euo pipefail
 cd "$(dirname "$0")"
 
-APP="Switch Claude.app"
-DMG="SwitchClaude.dmg"
-NOTARY_PROFILE="${NOTARY_PROFILE:-switch-claude-notary}"
+APP="Claude Swap Mac.app"
+DMG="ClaudeSwapMac.dmg"
+NOTARY_PROFILE="${NOTARY_PROFILE:-claude-swap-mac-notary}"
 
 ./build-app.sh
 
@@ -22,6 +22,10 @@ notarize() {
 
 HAVE_NOTARY=0
 if xcrun notarytool history --keychain-profile "$NOTARY_PROFILE" >/dev/null 2>&1; then
+    HAVE_NOTARY=1
+elif xcrun notarytool history --keychain-profile switch-claude-notary >/dev/null 2>&1; then
+    # Credentials stored under the app's pre-rename profile name still work.
+    NOTARY_PROFILE=switch-claude-notary
     HAVE_NOTARY=1
 else
     echo "No notarization credentials (keychain profile '$NOTARY_PROFILE') — skipping notarization."
@@ -57,7 +61,7 @@ rm -f "$DMG"
 if [ -n "$DMGBUILD_CMD" ] && [ -f "$ART/background.tiff" ]; then
     $DMGBUILD_CMD -s scripts/dmg-settings.py \
         -D app="$APP" -D background="$ART/background.tiff" \
-        "Switch Claude" "$DMG"
+        "Claude Swap Mac" "$DMG"
 else
     echo "dmgbuild unavailable (pip install dmgbuild, or install uv) — building plain DMG."
     STAGING=".build/dmg-staging"
@@ -65,7 +69,7 @@ else
     mkdir -p "$STAGING"
     cp -R "$APP" "$STAGING/"
     ln -s /Applications "$STAGING/Applications"
-    hdiutil create -volname "Switch Claude" -srcfolder "$STAGING" -ov -format UDZO -quiet "$DMG"
+    hdiutil create -volname "Claude Swap Mac" -srcfolder "$STAGING" -ov -format UDZO -quiet "$DMG"
     rm -rf "$STAGING"
 fi
 

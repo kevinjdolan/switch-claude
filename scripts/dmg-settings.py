@@ -1,9 +1,9 @@
-# dmgbuild settings for the Switch Claude DMG.
+# dmgbuild settings for the Claude Swap Mac DMG.
 # Used by make-dmg.sh:
-#   dmgbuild -s scripts/dmg-settings.py -D app=<path> -D background=<tiff> "Switch Claude" SwitchClaude.dmg
+#   dmgbuild -s scripts/dmg-settings.py -D app=<path> -D background=<tiff> "Claude Swap Mac" ClaudeSwapMac.dmg
 import os.path
 
-app = defines.get("app", "Switch Claude.app")  # noqa: F821
+app = defines.get("app", "Claude Swap Mac.app")  # noqa: F821
 appname = os.path.basename(app)
 
 format = "UDZO"

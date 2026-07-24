@@ -26,7 +26,7 @@ final class AccountStore: ObservableObject {
 
     static let appSupportDir: URL = FileManager.default
         .urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-        .appendingPathComponent("SwitchClaude", isDirectory: true)
+        .appendingPathComponent("ClaudeSwapMac", isDirectory: true)
     static let profilesDir: URL = appSupportDir.appendingPathComponent("Profiles", isDirectory: true)
     private static let configURL: URL = appSupportDir.appendingPathComponent("accounts.json")
 
@@ -36,7 +36,19 @@ final class AccountStore: ObservableObject {
     }
 
     init() {
+        Self.migrateLegacyDataDir()
         load()
+    }
+
+    /// Moves data from the pre-rename "SwitchClaude" directory (this app was
+    /// formerly named Switch Claude) so existing accounts and logins survive.
+    private static func migrateLegacyDataDir() {
+        let fm = FileManager.default
+        let legacy = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("SwitchClaude", isDirectory: true)
+        if !fm.fileExists(atPath: appSupportDir.path), fm.fileExists(atPath: legacy.path) {
+            try? fm.moveItem(at: legacy, to: appSupportDir)
+        }
     }
 
     func profileURL(for account: Account) -> URL? {
@@ -66,7 +78,7 @@ final class AccountStore: ObservableObject {
             let data = try encoder.encode(Config(accounts: accounts, currentAccountID: currentAccountID))
             try data.write(to: Self.configURL, options: .atomic)
         } catch {
-            NSLog("SwitchClaude: failed to save config: \(error)")
+            NSLog("ClaudeSwapMac: failed to save config: \(error)")
         }
     }
 

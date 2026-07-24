@@ -31,7 +31,7 @@ final class HotKeyManager {
             &handlerRef
         )
 
-        let id = EventHotKeyID(signature: OSType(0x5357_434C), id: 1) // 'SWCL'
+        let id = EventHotKeyID(signature: OSType(0x4353_574D), id: 1) // 'CSWM'
         let status = RegisterEventHotKey(
             UInt32(kVK_ANSI_S),
             UInt32(controlKey | optionKey),
@@ -41,7 +41,7 @@ final class HotKeyManager {
             &hotKeyRef
         )
         if status != noErr {
-            NSLog("SwitchClaude: hotkey registration failed (\(status)) — ⌃⌥S may be taken by another app")
+            NSLog("ClaudeSwapMac: hotkey registration failed (\(status)) — ⌃⌥S may be taken by another app")
         }
     }
 }

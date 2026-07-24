@@ -1,12 +1,12 @@
 #!/bin/bash
-# Builds Switch Claude.app from the Swift package.
+# Builds Claude Swap Mac.app from the Swift package.
 # Signs with a Developer ID Application identity when one is in the keychain
 # (hardened runtime + timestamp, as notarization requires); otherwise ad-hoc.
 # Override with SIGN_IDENTITY=<identity> or SIGN_IDENTITY=- (force ad-hoc).
 set -euo pipefail
 cd "$(dirname "$0")"
 
-APP="Switch Claude.app"
+APP="Claude Swap Mac.app"
 SIGN_IDENTITY="${SIGN_IDENTITY:-$(security find-identity -v -p codesigning 2>/dev/null | awk -F'"' '/Developer ID Application/ {print $2; exit}')}"
 
 swift build -c release
@@ -20,7 +20,7 @@ fi
 
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
-cp .build/release/SwitchClaude "$APP/Contents/MacOS/SwitchClaude"
+cp .build/release/ClaudeSwapMac "$APP/Contents/MacOS/ClaudeSwapMac"
 cp Support/Info.plist "$APP/Contents/Info.plist"
 cp Support/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
 
